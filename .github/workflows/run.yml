@@ -38,14 +38,17 @@ jobs:
         fi
         
         cd daily_arxiv
-        export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-        export OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}
-        export LANGUAGE="${{ vars.LANGUAGE }}"
-        export CATEGORIES="${{ vars.CATEGORIES }}"
-        export MODEL_NAME="${{ vars.MODEL_NAME }}"
-        echo $OPENAI_BASE_URL
-        echo $MODEL_NAME
-        echo $CATEGORIES
+        # export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+        # export OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}
+        # export LANGUAGE="${{ vars.LANGUAGE }}"
+        # export CATEGORIES="${{ vars.CATEGORIES }}"
+        # export MODEL_NAME="${{ vars.MODEL_NAME }}"
+        export OPENAI_API_KEY="sk-86d0484de8f74a4187386c155758c85d"
+        export OPENAI_BASE_URL="https://api.deepseek.com"
+        export LANGUAGE="CHINESE"
+        export CATEGORIES="cs.RO,cs.AI"
+        export MODEL_NAME="deepseek-chat"
+    
         
         # 使用Scrapy爬取
         # Use Scrapy to crawl
@@ -107,10 +110,14 @@ jobs:
         echo "开始AI增强处理... / Starting AI enhancement processing..."
         
         cd ai
-        export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-        export OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}
-        export LANGUAGE="${{ vars.LANGUAGE }}"
-        export MODEL_NAME="${{ vars.MODEL_NAME }}"
+        # export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+        # export OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}
+        export OPENAI_API_KEY="sk-86d0484de8f74a4187386c155758c85d"
+        export OPENAI_BASE_URL="https://api.deepseek.com"
+        # export LANGUAGE="${{ vars.LANGUAGE }}"
+        # export MODEL_NAME="${{ vars.MODEL_NAME }}"
+        export LANGUAGE="CHINESE"
+        export MODEL_NAME="deepseek-chat"
         
         python enhance.py --data ../data/${today}.jsonl
         
@@ -129,7 +136,9 @@ jobs:
         echo "转换为Markdown格式... / Converting to Markdown format..."
         
         # 设置环境变量 / Set environment variables
-        export LANGUAGE="${{ vars.LANGUAGE }}"
+        #export LANGUAGE="${{ vars.LANGUAGE }}"
+        export LANGUAGE="CHINESE"
+        
         
         cd to_md
         
@@ -183,8 +192,8 @@ jobs:
     - name: Commit changes
       if: steps.dedup_check.outputs.has_new_content == 'true'
       run: |
-        git config --global user.email "${{ vars.EMAIL }}"
-        git config --global user.name "${{ vars.NAME }}"
+        git config --global user.email "625076349@qq.com"
+        git config --global user.name "pickteemo"
         git add .
         # 检查是否有变更需要提交 / Check if there are changes to commit
         if git diff --staged --quiet; then
